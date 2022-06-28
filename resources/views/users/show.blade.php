@@ -1,9 +1,8 @@
 @extends('template.users')
-@section('title', 'Listagem de Usuários')
+@section('title', $title)
 @section('body')
 
-    <h1>Listagem de Usúarios</h1>
-    <a href="{{ route('users.create') }}" class="btn btn-success">Novo Usuário</a>
+    <h1>Usuário {{ $user->name }}</h1>
     <table class="table">
         <thead class="text-center">
         <tr>
@@ -14,15 +13,14 @@
             <th scope="col">Ações</th>
         </tr>
         <tbody class="text-center">
-        @foreach($users as $user)
             <tr>
                 <th scope="row">{{ $user->id }}</th>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ date('d/m/y - H:i', strtotime($user->created_at)) }}</td>
-                <td><a href="{{ route('users.show', $user->id) }}" class="btn btn-info text-white">Visualizar</a></td>
+                <td><a href="" class="btn btn-warning text-white">Editar</a></td>
+                <td><a href="" class="btn btn-danger text-white">Deletar</a></td>
             </tr>
-        @endforeach
         </tbody>
         </thead>
     </table>
