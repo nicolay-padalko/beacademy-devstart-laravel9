@@ -2,6 +2,15 @@
 @section('title', "Usuário {$user->name}")
 @section('body')
     <h1>Usuário {{$user->name}}</h1>
+    @if($errors->any())
+
+        <div class="alert alert-danger" role="alert">
+            @foreach($errors->all() as $error)
+                {{ $error }}<br>
+            @endforeach
+        </div>
+    @endif
+
     <form action="{{ route('users.update', $user->id) }}" method="POST">
         @method('PUT')
         @csrf
@@ -11,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email"  value="{{ $user->email }}">
+            <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Senha</label>
