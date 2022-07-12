@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateUseFormRequest;
 
@@ -14,21 +15,33 @@ class UserController extends Controller
         $this->model = $user;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(5);
+
+        $users = $this->model->getUsers(
+            $request->search ?? ''
+        );
 
         return view('users.index', compact('users'));
+
+
     }
 
     public function show($id)
     {
-        if(!$user = User::find($id))
+        if (!$user = User::find($id))
             return redirect()->route('users.index');
 
-        $title = 'Usuário ' . $user->name;
+//        $team = Team::find($id);
+//        $team->load('users');
+//        return $team;
 
-        return view('users.show', compact('user', 'title'));
+
+//        $title = 'Usuário ' . $user->name;
+
+//        $user->load('teams');
+//        return $user;
+        return view('users.show', compact('user'));
     }
 
     public function create()
@@ -48,7 +61,7 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
 
-        if($request->image) {
+        if ($request->image) {
             $file = $request['image'];
             $path = $file->store('profile', 'public');
             $data['image'] = $path;
@@ -61,19 +74,19 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if(!$user = $this->model->find($id))
+        if (!$user = $this->model->find($id))
             return redirect()->route('users.index');
         return view('users.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
-        if(!$user = $this->model->find($id))
+        if (!$user = $this->model->find($id))
             return redirect()->route('users.index');
 
         $data = $request->only('name', 'email');
-        if($request->password)
-            $data['password']=bcrypt($request->password);
+        if ($request->password)
+            $data['password'] = bcrypt($request->password);
 
         $user->update($data);
         return redirect()->route('users.index');
@@ -81,7 +94,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        if(!$user = $this->model->find($id))
+        if (!$user = $this->model->find($id))
             return redirect()->route('users.index');
 
         $user->delete();
