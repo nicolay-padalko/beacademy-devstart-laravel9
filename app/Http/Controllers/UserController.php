@@ -7,6 +7,7 @@ use App\Models\Team;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateUseFormRequest;
 
+
 class UserController extends Controller
 {
 
@@ -32,16 +33,17 @@ class UserController extends Controller
         if (!$user = User::find($id))
             return redirect()->route('users.index');
 
+//        $user = User::findOrFail($id);
+
 //        $team = Team::find($id);
 //        $team->load('users');
 //        return $team;
 
-
-//        $title = 'Usuário ' . $user->name;
+        $title = 'Usuário ' . $user->name;
 
 //        $user->load('teams');
 //        return $user;
-        return view('users.show', compact('user'));
+        return view('users.show', compact('user', 'title'));
     }
 
     public function create()
@@ -70,6 +72,9 @@ class UserController extends Controller
         $this->model->create($data);
 
         return redirect()->route('users.index');
+
+//        $request->session()->flash('create', 'Usuário cadastrado com sucesso!');
+//        return redirect()->route('users.index')->with('create', 'Usúario cadastrado com sucesso');
     }
 
     public function edit($id)
@@ -100,6 +105,11 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index');
+    }
+
+    public function admin()
+    {
+        return view('admin.index');
     }
 
 }

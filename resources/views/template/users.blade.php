@@ -11,6 +11,7 @@
 </head>
 <body>
 <div class="container w-75 p-3">
+
     <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -31,14 +32,19 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-white" href="#">{{ Auth::user()->name }}</a>
                                 </li>
+                                @if(Auth::user()->is_admin == 1)
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('admin') }}">DashBoard</a>
+                                    </li>
+                                @endif
                                 <li class="nav-item">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <x-responsive-nav-link class="nav-link text-white" :href="route('logout')"
+                                        <a class="nav-link text-white"><span  :href="route('logout')"
                                                                onclick="event.preventDefault();
                                                                 this.closest('form').submit();">
                                             {{ __('Sair') }}
-                                        </x-responsive-nav-link>
+                                        </span></a>
                                     </form>
                                 </li>
                             @else
@@ -58,4 +64,6 @@
     @yield('body')
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </html>

@@ -1,5 +1,5 @@
 @extends('template.users')
-@section('title', 'Login')
+@section('title', 'login')
 @section('body')
     <h1>Login</h1>
     <div class="justify-content-center">
