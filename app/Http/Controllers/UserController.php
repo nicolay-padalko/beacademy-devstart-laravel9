@@ -53,28 +53,21 @@ class UserController extends Controller
 
     public function store(StoreUpdateUseFormRequest $request)
     {
-//        $user = new User;
-//        $user->name = $request->name;
-//        $user->email = $request->email;
-//        $user->password = bcrypt($request->password);
-//        $user->save();
-
-
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
 
         if ($request->image) {
             $file = $request['image'];
-            $path = $file->store('profile', 'public');
+            $path = $file->store('storage', 'public');
             $data['image'] = $path;
         }
 
         $this->model->create($data);
 
-        return redirect()->route('users.index');
+//        return redirect()->route('users.index');
 
-//        $request->session()->flash('create', 'Usuário cadastrado com sucesso!');
-//        return redirect()->route('users.index')->with('create', 'Usúario cadastrado com sucesso');
+        $request->session()->flash('create', 'Usuário cadastrado com sucesso!');
+        return redirect()->route('users.index')->with('create', 'Usúario cadastrado com sucesso');
     }
 
     public function edit($id)
@@ -93,9 +86,14 @@ class UserController extends Controller
         if ($request->password)
             $data['password'] = bcrypt($request->password);
 
+        $data['is_admin'] = $request->admin?1:0;
+
         $user->update($data);
-        return redirect()->route('users.index');
+//        return redirect()->route('users.index');
+//        request->session()->flash('create', 'Usuário cadastrado com sucesso!');
+        return redirect()->route('users.index')->with('edit', 'Usúario atualizado com sucesso');
     }
+
 
     public function destroy($id)
     {
@@ -104,7 +102,8 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index');
+//        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('delete', 'Usúario excluido com sucesso');
     }
 
     public function admin()
